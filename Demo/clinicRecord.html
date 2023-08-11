@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Clinic Record</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="./src/styles/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    
+      <!-- HEADER -->
+      <div>
+        <nav class="bg-gradient-to-r from-lime-200  h-16 flex space-x-2">
+        <img src="Bulsu-logo.png" alt="">
+        <h1 class="font-serif font-bold text-lime-950 text-4xl my-2">Bulsu Clinic</h1>
+        </nav>
+        
+        <ul class="md:flex md:items-center mx-4 space-x-2 mt-3">
+          <h1 class="font-serif text-lime-950 font-bold text-3xl"><button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="2.5" stroke="currentColor" class="w-10 h-8 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+              </svg>
+          </button>Clinic Record</h1>
+          </ul>
+      </div>
+        <!-- Sidebar -->
+        <div class="offcanvas offcanvas-start bg-gradient-to-r from-lime-50" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+            <button type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="pl-5 font-serif font-bold text-lime-950">
+              <li><a href="dashboard.html"><i class="fa fa-home p-3"></i>DASHBOARD</a></li>
+              <li><a href="inventory.html"><i class="fa fa-pencil-square-o p-3"></i>INVENTORY</a></li>
+              <li><a href="clinicForm.html"><i class="fa fa-file-text-o p-3"></i>RECIEVING</a></li>
+              <li><a href="summarization.html"><i class="fa fa-bar-chart p-3"></i>SUMMARIZATION</a></li>
+              <li><a href="clinicRecord.html"><i class="fa fa-university p-3"></i>FACULTY</a></li>
+              <li class="mb-10"><a href="clinicRecord.html"><i class="fa fa-users p-3"></i>STAFF</a></li>
+              
+              <hr />
+              <li><a href="settings.html"><i class="fa fa fa-cog p-3"></i>SETTINGS</a></li>
+              <li><a href="about.html"><i class="fa fa-info-circle p-3"></i>ABOUT</a></li>
+             </ul>
+          </div>
+        </div>
+        <!-- END -->
+    
+    <div class="py-8 px-2 mx-auto max-w-5xl">
+      <div id="facultyRecord">
+        <table class="w-full text-center" fixed>
+          <thead>
+            <tr>
+              <th class="bg-gray-500 p-3">Name</th>
+              <th class="bg-gray-500 ">Complaint</th>
+              <th class="bg-gray-500 ">Date of Entry</th>
+              <th class="bg-gray-500 ">Medication</th>
+              <th class="bg-gray-500 ">Others</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        </br>
+        <button class="w-30 text-white bg-lime-950 hover:bg-lime-900 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-900 dark:focus:ring-primary-800" type="button" onclick="(getAllRecord())">Get All Record</button>
+       </br>
+        <p id="clinicRecordMessage" class="message"></p>
+      </div>
+      <!-- patientHistory -->
+      <div id="patientHistory" hidden>
+        <h2 class="font-bold font-serif text-2xl" >HISTORY</h2>
+        </br>
+        <div id="viewHistory">
+          <h3 class="text-2xl font-bold font-serif">Patient Name: <span class="font-normal" id="patientName"></span></h3>
+          </br>
+          <table class="w-full text-center">
+            <thead>
+              <tr>
+                <th class="bg-gray-500 p-3">ID</th>
+                <th class="bg-gray-500 ">Date Entry</th>
+                <th class="bg-gray-500 ">Complaint</th>
+                <th class="bg-gray-500 ">Medication</th>
+                <th class="bg-gray-500 ">Attachments</th>
+              </tr>
+            </thead>
+            <tbody id="tableBodyByPatient"></tbody>
+          </table>
+          <p id="recordMessageByPatient" class="message"></p>
+        </div>
+        <hr />
+      </div>
+      <div id="recordAttachments" hidden>
+        <h2 class="font-bold font-serif text-2xl">SEE ATTACHMENTS</h2>
+        </br>
+        <h3 class="text-2xl font-bold font-serif">Patient's Findings</h3>
+         <table class="w-full">
+          <tr>
+            <td  class="text-left p-2 font-bold">Patient's Name :</td>
+            <td class="font-bold" id="pfName"></td>
+          </tr>
+          <tr>
+            <td  class="text-left pl-3 font-bold">Complaint :</td>
+            <td class="font-bold" id="pfComplaint"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Medication :</td>
+            <td class="font-bold" id="pfMedication"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Treatment :</td>
+            <td class="font-bold" id="pfTreatment"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Laboratory :</td>
+            <td class="font-bold" id="pfLaboratory"></td>
+          </tr>
+         </table>
+        </br>
+         <h3 class="text-2xl font-bold font-serif">Vital Signs</h3>
+         <table class="w-full">
+          <tr>
+            <td class="text-left pl-3 font-bold">Blood Pressure :</td>
+            <td class="font-bold" id="pfBloodPressure"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Pulse :</td>
+            <td class="font-bold" id="pfPulse"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Weight :</td>
+            <td class="font-bold" id="pfWeight"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Temperature :</td>
+            <td class="font-bold" id="pfTemperature"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Respiration :</td>
+            <td class="font-bold" id="pfRespiration"></td>
+          </tr>
+          <tr>
+            <td class="text-left pl-3 font-bold">Oxygen Saturation :</td>
+            <td class="font-bold" id="pfSaturation"></td>
+          </tr>
+         </table>
+        </br>
+        <h3 class="font-serif font-bold text-lime-950">Attachments</h3>
+        </br>
+        <div id="attachmentsContainer"></div>
+        </br>
+        <button class="w-30 text-white bg-lime-950 hover:bg-lime-900 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-900 dark:focus:ring-primary-800" type="button" onclick="(newAttachment())">Add Attachment</button>
+        <p></p>
+        <p id="messageByPf" class="message"></p>
+        <hr />
+      </div>
+      <form
+        id="addAttachment"
+        enctype="multipart/form-data"
+        onsubmit="(addAttachment(event))"
+        hidden
+      >
+        
+        <h2 class="font-serif font-bold text-lime-950 mb-5">ADD ATTACHMENTS</h2>
+        
+            <div for="recordId" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                 <input type="hidden" name="id" id="recordId">Insert File</input><input
+                  type="file"
+                  name="attachments[]"
+                 multiple
+                id="attachments"
+                />
+            </div>
+      <p id="addAttachmentMessage" class="message"></p>
+      <button class="w-30 text-white bg-lime-950 hover:bg-lime-900 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-900 dark:focus:ring-primary-800 mt-2" type="submit">Submit</button>
+      </form>
+      </br>
+      <a href="./">Back to home page</a>
+    </div>
+    <script src="./JavaScript/clinicRecord.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 
+  </body>
+</html>
